@@ -1,41 +1,219 @@
 <html>
 <head>
+  <title>DIGITPAIN</title>
+  <meta charset="utf-8">
   <meta name="description"
-        content="A centralized registry of mints, maintained by DIGITPAIN.">
-
+        content="A centralized registry of paintings maintained by DIGITPAIN.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Xanh+Mono&display=swap');
+
+    @font-face {
+      font-family: 'Berkeley Mono';
+      font-weight: normal;
+      font-style: normal;
+      src: url('/assets/fonts/BerkeleyMono-Regular.woff2') format('woff2'),
+      url('/assets/fonts/BerkeleyMono-Regular.woff') format('woff');
+    }
+
+    @font-face {
+      font-family: 'Berkeley Mono';
+      font-weight: normal;
+      font-style: italic;
+      src: url('/assets/fonts/BerkeleyMono-Italic.woff2') format('woff2'),
+      url('/assets/fonts/BerkeleyMono-Italic.woff') format('woff');
+    }
+
+    @font-face {
+      font-family: 'Berkeley Mono';
+      font-weight: bold;
+      font-style: normal;
+      src: url('/assets/fonts/BerkeleyMono-Bold.woff2') format('woff2'),
+      url('/assets/fonts/BerkeleyMono-Bold.woff') format('woff');
+    }
+
+    @font-face {
+      font-family: 'Berkeley Mono';
+      font-weight: bold;
+      font-style: italic;
+      src: url('/assets/fonts/BerkeleyMono-BoldItalic.woff2') format('woff2'),
+      url('/assets/fonts/BerkeleyMono-BoldItalic.woff') format('woff');
+    }
+
+    html {
+      display: flex;
+    }
+
     body {
-      background: black;
-      color: white;
-      font-family: monospace;
+      background: rgb(3, 3, 3);
+      color: rgb(240, 240, 240);
+      font-family: 'Berkeley Mono', monospace;
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+      line-height: 135%;
+      margin: auto;
+      padding: 1em;
+      max-width: 1024px;
+    }
+
+    ::selection {
+      color: rgb(3, 3, 3);
+      background: white;
     }
 
     a {
+      color: rgb(240, 240, 240);
+    }
+
+    em {
+      opacity: 0.25;
+      font-style: normal;
+    }
+
+    hr {
+      border: none;
+      height: 0.1em;
+      background: rgb(20, 20, 20);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .shadow {
+      color: rgb(3, 3, 3);
+    }
+
+    #digitpain {
+      font-weight: bold;
       color: white;
     }
+
+    #o1 {
+      opacity: 12.5%;
+    }
+
+    #o2 {
+      opacity: 6.5%;
+    }
+
+    #o3 {
+      opacity: 3.25%;
+    }
+
+    #img {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 1em;
+    }
+
+    #parable {
+      color: rgb(105, 5, 15);
+    }
+
   </style>
+  <script type="module">
+      const img = document.querySelector('#img');
+      const url = document.querySelector('#url');
+      const number = document.querySelector('#number');
+      const footer = document.querySelector('footer');
+
+      const paintings = [
+          {
+              url: "https://digitpain.com",
+              img: "https://digitpain.com/profile.jpg"
+          }
+      ];
+
+      function hashCheck() {
+          // If there is no hash in the URL, then make it the most recent picture.
+          if (window.location.hash.length === 0) {
+              window.onhashchange = undefined;
+              window.location.hash = "#" + (paintings.length - 1);
+              return;
+          }
+
+          // If there already is a hash, then check if it's an integer and return
+          // the request, or default to "#0".
+          if (window.location.hash.length > 1) {
+
+              const index = parseInt(window.location.hash.substr(1));
+
+              let p = paintings[index];
+
+              if (p === undefined) {
+                  window.location.hash = "#0";
+                  return;
+              } else {
+                  window.onhashchange = undefined;
+                  window.location.hash = "#" + index;
+                  window.onhashchange = hashCheck;
+              }
+
+              url.innerHTML = `<a href="${p.url}">${p.url}</a>`;
+              number.innerHTML = index;
+
+              img.src = p.img;
+              img.onload = function () {
+                  footer.classList.remove("hidden");
+              }
+          }
+
+      }
+      hashCheck();
+      window.onhashchange = hashCheck;
+  </script>
 </head>
-
 <body>
-<header>
-  "best pixels ever plotted"
-</header>
-
-<footer>
-  Painter: DIGITPAIN
-  <br>
-  Parable: "best pixels ever plotted!" - 2022.04.05.22.56
-  <br>
-  History: <a href="https://rdp.whistlegraph.com">Radical Digital Painting</a>,
-  <a href="https://opensea.io/collection/tumpin-by-jeffrey-alan-scudder-2017">Tumpin</a>, <a href="https://opensea.io/collection/left-gallery?search[query]=ten%20minute%20painting&search[sortAscending]=true&search[sortBy]=PRICETen Minute Painting">Ten Minute Painting</a>
-  <br><br>
-  Culture: <a href="https://twitter.com/digitpain">Twitter</a>, <a href="https://discord.gg/7KQsdPnrvX">Discord</a>
-  <a href="https://instagram.com/digitpain">Instagram</a>
-  <br>
-  Markets: <a href="https://opensea.io/DIGITPAIN">OpenSea</a>, Foundation, <a href="https://teia.art/tz/tz1gkf8EexComFBJvjtT1zdsisdah791KwBE">Teia</a>
+<img id="img">
+<footer class="hidden">
+  <hr>
+  <em>PICTURE</em> <span id="url"></span>
   <br>
   <br>
-  Wallets: <a href="https://etherscan.io/enslookup-search?search=digitpain.eth">digitpain.eth</a>, <a href="https://tzkt.io/tz1gkf8EexComFBJvjtT1zdsisdah791KwBE/operations">digitpain.tez</a>
+  <em style="opacity: 12.5%">DIGITAL</em>
+  <br>
+  <em>PAINTER</em> <span id="digitpain">DIGITPAIN</span><span
+  style="user-select: none;"> <span id="o1">> whistlegraph </span> <span
+  id="o2">> justanothersystem</span> <span id="o3">> jeffrey alan scudder</span>
+  <br>
+</span><em class="shadow">PARABLE</em> <span id="parable">best pixels ever plotted</span>
+  <br>
+  <br>
+  <em>INTEGER</em> <span id="number"></span>
+  <br>
+  <br>
+  <em>MARKETS</em> <a target="_blank" href="https://teia.art/digitpain">Teia</a>,
+  <a target="_blank" href="https://opensea.io/DIGITPAIN">OpenSea</a>, <a
+  target="_blank" href="https://foundation.app/@digitpain">Foundation</a>
+  <br>
+  <em>WALLETS</em>
+  <a target="_blank"
+     href="https://tzkt.io/tz1gkf8EexComFBJvjtT1zdsisdah791KwBE/operations">digitpain.tez</a>,
+  <a target="_blank"
+     href="https://etherscan.io/enslookup-search?search=digitpain.eth">digitpain.eth</a>
+  <br>
+  <em>ARTWORK</em> <a target="_blank" href="https://rdp.whistlegraph.com">Radical
+  Digital Painting</a>,
+  <a target="_blank"
+     href="https://opensea.io/collection/tumpin-by-jeffrey-alan-scudder-2017">Tumpin</a>,
+  <a target="_blank"
+     href="https://opensea.io/collection/left-gallery?search[query]=ten%20minute%20painting&search[sortAscending]=true&search[sortBy]=PRICETen Minute Painting">Ten
+    Minute Painting</a>
+  <br>
+  <br>
+  <em>CULTURE</em> <a target="_blank" href="https://tiktok.com/@whistlegraph">Whistlegraph</a>
+  w/ <a target="_blank"
+        href="https://www.instagram.com/applinfreundlich">Alex</a> & <a
+  target="_blank" href="https://www.instagram.com/ck_free">Camille</a>
+  <br>
+  <em>SOCIETY</em> <a target="_blank" href="https://twitter.com/digitpain">Twitter</a>,
+  <a target="_blank" href="https://discord.gg/7KQsdPnrvX">Discord</a>, <a
+  target="_blank" href="https://instagram.com/digitpain">Instagram</a>
+  <br>
+  <em>SOURCES</em> <a target="_blank"
+                      href="https://github.com/digitpain">GitHub</a>
+  <br>
 </footer>
 </body>
 </html>
