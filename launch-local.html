@@ -6,6 +6,8 @@
         content="A centralized registry of paintings maintained by DIGITPAIN.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Xanh+Mono&display=swap');
+
     @font-face {
       font-family: 'Berkeley Mono';
       font-weight: normal;
@@ -71,10 +73,6 @@
       background: rgb(20, 20, 20);
     }
 
-    footer {
-      position: relative;
-    }
-
     .hidden {
       display: none;
     }
@@ -122,39 +120,19 @@
     #parable {
       color: rgb(105, 5, 15);
     }
-
-    #fullscreen {
-      position: absolute;
-      top: 0.1em;
-      right: -0.15em;
-      font-size: 2.5em;
-      line-height: 1em;
-      width: 1em;
-      height: 1em;
-      padding: 0;
-      box-sizing: border-box;
-      border: none;
-      background: transparent;
-      color: rgb(50, 50, 50);
-      cursor: pointer;
-    }
-
-    #fullscreen:hover {
-      transform: scale(1.15);
-      color: rgb(100, 100, 100);
-    }
   </style>
   <script type="module">
+      const wrapper = document.querySelector('#wrapper');
+
       const img = document.querySelector('#img');
       const url = document.querySelector('#url');
       const number = document.querySelector('#number');
       const footer = document.querySelector('footer');
-      const fullscreen = document.querySelector('#fullscreen');
 
       const paintings = [
           {
-              url: "https://aesthetic.computer/#digitpain",
-              img: "https://aesthetic.computer/#digitpain",
+              url: "https://192.168.1.5",
+              img: "https://127.0.0.1/#digitpain",
               width: 1000,
               height: 1250
           }
@@ -192,7 +170,7 @@
 
               function resize() {
                   img.style.width = "100%";
-                  img.style.height = Math.ceil(img.clientWidth / (p.width / p.height)) + "px";
+                  img.style.height = Math.ceil(img.clientWidth / (p.width / p.height));
 
               }
 
@@ -203,61 +181,19 @@
                   footer.classList.remove("hidden");
               }
           }
+
       }
+
       hashCheck();
       window.onhashchange = hashCheck;
-
-      // Fullscreen
-      img.addEventListener('pointerdown', (e) => {
-          if (e.key === "f") {
-              toggleFullscreen();
-          }
-      })
-
-      fullscreen.addEventListener('click', (e) => {
-          toggleFullscreen();
-      });
-
-      // Fullscreen [Pulled from aesthetic.computer:bios.js] 2022.04.08.05.16
-      // Note: This doesn't work in Safari because you can't fullscreen the body element.
-      //       (Or anything other than a video element?) 2022.04.08.05.16
-      const requestFullscreen =
-          document.body.requestFullscreen || wrapper.webkitRequestFullscreen;
-
-      const exitFullscreen =
-          document.exitFullscreen || document.webkitExitFullscreen;
-
-      // Tries to toggle fullscreen. Must be called within a user interaction.
-      function toggleFullscreen() {
-          const fullscreenElement =
-              document.fullscreenElement || document.webkitFullscreenElement;
-
-          if (!fullscreenElement) {
-              requestFullscreen.apply(img)?.catch((e) => console.error(e));
-          } else {
-              exitFullscreen();
-          }
-      }
-
-      document.body.onfullscreenchange = (event) => {
-          const fullscreenElement =
-              document.fullscreenElement || document.webkitFullscreenElement;
-
-          if (fullscreenElement) {
-              console.log("😱 Entered fullscreen mode!", fullscreenElement);
-          } else {
-              console.log("😱 Leaving fullscreen mode!");
-          }
-      };
   </script>
 </head>
 <body>
 
 <div id="wrapper">
   <iframe id="img" src=""></iframe>
-
+<!--  <img id="img" src="">-->
   <footer class="hidden">
-    <button id="fullscreen" title="Fullscreen">⛶</button>
     <hr>
     <em>PICTURE</em> <span id="url"></span>
     <br>
