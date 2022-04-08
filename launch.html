@@ -1,11 +1,15 @@
 <html>
 <head>
-  <title>DIGITPAIN</title>
+  <title>DIGITPAIN: 2022</title>
   <meta charset="utf-8">
   <meta name="description"
         content="A centralized registry of paintings maintained by DIGITPAIN.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    :root {
+      --backdrop: rgb(8, 8, 8);
+    }
+
     @font-face {
       font-family: 'Berkeley Mono';
       font-weight: normal;
@@ -40,53 +44,56 @@
 
     body {
       display: block;
-      background: rgb(3, 3, 3);
+      background: var(--backdrop);
       color: rgb(240, 240, 240);
       font-family: 'Berkeley Mono', monospace;
-      font-size: 16px;
+      font-size: 14px;
       -webkit-text-size-adjust: 100%;
       line-height: 135%;
       width: 100%;
       margin: 0;
+      padding-top: 0em;
     }
 
     ::selection {
-      color: rgb(3, 3, 3);
+      color: var(--backdrop);
       background: white;
     }
 
     a {
       color: rgb(240, 240, 240);
+      white-space: nowrap;
     }
 
     em {
-      opacity: 0.25;
+      color: rgb(96, 96, 96);
       font-style: normal;
     }
 
     hr {
       border: none;
-      height: 0.1em;
-      margin: 2em auto 0.5em auto;
-      background: rgb(20, 20, 20);
+      height: 5vw;
+      margin: 0em auto;
+      margin-top: -1.5vw;
+      background: linear-gradient(var(--backdrop), rgb(24, 24, 24));
     }
 
     footer {
+      overflow: hidden;
       position: relative;
+      padding-bottom: 1em;
+      padding-top: 1em;
+      padding-left: 1em;
+      padding-right: 1em;
+      background: linear-gradient(rgb(32, 32, 32), var(--backdrop))
     }
 
-    .hidden {
-      display: none;
-    }
-
-    .shadow {
-      color: rgb(3, 3, 3);
-    }
+    .hidden { display: none; }
 
     #wrapper {
+      position: relative;
       display: block;
-      flex-direction: column;
-      padding: 1em;
+      padding: 0em;
       width: 100%;
       max-width: 728px;
       margin: 0 auto;
@@ -94,54 +101,43 @@
       height: auto;
     }
 
+    #footer-content {
+      margin: auto;
+      max-width: 728px;
+    }
+
     #img {
       display: block;
       max-width: 100%;
+      max-height: 100vh;
       box-sizing: border-box;
       border: none;
       image-rendering: pixelated;
+      pointer-events: none;
+      filter: drop-shadow(0px 0px 2em rgb(16, 16, 16));
     }
+
+    #o1 { opacity: 25%; }
+    #o2 { opacity: 15%; }
+    #o3 { opacity: 10%; }
 
     #digitpain {
       font-weight: bold;
       color: white;
-    }
-
-    #o1 {
-      opacity: 12.5%;
-    }
-
-    #o2 {
-      opacity: 6.5%;
-    }
-
-    #o3 {
-      opacity: 3.25%;
+      /*font-size: 125%;*/
     }
 
     #parable {
-      color: rgb(105, 5, 15);
+      color: rgb(215, 130, 185);
+      /*font-size: 125%;*/
+      /*font-family: 'Xanh Mono';*/
+      font-style: normal;
+      text-transform: uppercase;
     }
 
-    #fullscreen {
-      position: absolute;
-      top: 0.1em;
-      right: -0.15em;
-      font-size: 2.5em;
-      line-height: 1em;
-      width: 1em;
-      height: 1em;
-      padding: 0;
-      box-sizing: border-box;
-      border: none;
-      background: transparent;
-      color: rgb(50, 50, 50);
-      cursor: pointer;
-    }
-
-    #fullscreen:hover {
-      transform: scale(1.15);
-      color: rgb(100, 100, 100);
+    #artwork {
+      text-indent: -4.8em;
+      padding-left: 4.8em;
     }
   </style>
   <script type="module">
@@ -149,7 +145,7 @@
       const url = document.querySelector('#url');
       const number = document.querySelector('#number');
       const footer = document.querySelector('footer');
-      const fullscreen = document.querySelector('#fullscreen');
+      // const fullscreen = document.querySelector('#fullscreen');
 
       const paintings = [
           {
@@ -193,7 +189,8 @@
               function resize() {
                   img.style.width = "100%";
                   img.style.height = Math.ceil(img.clientWidth / (p.width / p.height)) + "px";
-
+                  // fullscreen.style.width = img.clientWidth + "px";
+                  // fullscreen.style.height = img.clientHeight + "px";
               }
 
               resize();
@@ -204,6 +201,7 @@
               }
           }
       }
+
       hashCheck();
       window.onhashchange = hashCheck;
 
@@ -213,101 +211,68 @@
               toggleFullscreen();
           }
       })
-
-      fullscreen.addEventListener('click', (e) => {
-          toggleFullscreen();
-      });
-
-      // Fullscreen [Pulled from aesthetic.computer:bios.js] 2022.04.08.05.16
-      // Note: This doesn't work in Safari because you can't fullscreen the body element.
-      //       (Or anything other than a video element?) 2022.04.08.05.16
-      const requestFullscreen =
-          document.body.requestFullscreen || wrapper.webkitRequestFullscreen;
-
-      const exitFullscreen =
-          document.exitFullscreen || document.webkitExitFullscreen;
-
-      // Tries to toggle fullscreen. Must be called within a user interaction.
-      function toggleFullscreen() {
-          const fullscreenElement =
-              document.fullscreenElement || document.webkitFullscreenElement;
-
-          if (!fullscreenElement) {
-              requestFullscreen.apply(img)?.catch((e) => console.error(e));
-          } else {
-              exitFullscreen();
-          }
-      }
-
-      document.body.onfullscreenchange = (event) => {
-          const fullscreenElement =
-              document.fullscreenElement || document.webkitFullscreenElement;
-
-          if (fullscreenElement) {
-              console.log("😱 Entered fullscreen mode!", fullscreenElement);
-          } else {
-              console.log("😱 Leaving fullscreen mode!");
-          }
-      };
   </script>
 </head>
 <body>
 
 <div id="wrapper">
-  <iframe id="img" src=""></iframe>
-
-  <footer class="hidden">
-    <button id="fullscreen" title="Fullscreen">⛶</button>
-    <hr>
-    <em>PICTURE</em> <span id="url"></span>
-    <br>
-    <br>
-    <em style="opacity: 12.5%">DIGITAL</em>
-    <br>
-    <em>PAINTER</em> <span id="digitpain">DIGITPAIN</span><span
-    style="user-select: none;"> <span id="o1">> whistlegraph </span> <span
-    id="o2">> justanothersystem</span> <span
-    id="o3">> jeffrey alan scudder</span>
-  <br>
-</span><em class="shadow">PARABLE</em> <span id="parable">best pixels ever plotted</span>
-    <br>
-    <br>
-    <em>INTEGER</em> <span id="number"></span>
-    <br>
-    <br>
-    <em>MARKETS</em> <a target="_blank"
-                        href="https://teia.art/digitpain">Teia</a>,
-    <a target="_blank" href="https://opensea.io/DIGITPAIN">OpenSea</a>, <a
-    target="_blank" href="https://foundation.app/@digitpain">Foundation</a>
-    <br>
-    <em>WALLETS</em>
-    <a target="_blank"
-       href="https://tzkt.io/tz1gkf8EexComFBJvjtT1zdsisdah791KwBE/operations">digitpain.tez</a>,
-    <a target="_blank"
-       href="https://etherscan.io/enslookup-search?search=digitpain.eth">digitpain.eth</a>
-    <br>
-    <em>ARTWORK</em> <a target="_blank" href="https://rdp.whistlegraph.com">Radical
-    Digital Painting</a>,
-    <a target="_blank"
-       href="https://opensea.io/collection/tumpin-by-jeffrey-alan-scudder-2017">Tumpin</a>,
-    <a target="_blank"
-       href="https://opensea.io/collection/left-gallery?search[query]=ten%20minute%20painting&search[sortAscending]=true&search[sortBy]=PRICETen Minute Painting">Ten
-      Minute Painting</a>
-    <br>
-    <br>
-    <em>CULTURE</em> <a target="_blank" href="https://tiktok.com/@whistlegraph">Whistlegraph</a>
-    w/ <a target="_blank"
-          href="https://www.instagram.com/applinfreundlich">Alex</a> & <a
-    target="_blank" href="https://www.instagram.com/ck_free">Camille</a>
-    <br>
-    <em>SOCIETY</em> <a target="_blank" href="https://twitter.com/digitpain">Twitter</a>,
-    <a target="_blank" href="https://discord.gg/7KQsdPnrvX">Discord</a>, <a
-    target="_blank" href="https://instagram.com/digitpain">Instagram</a>
-    <br>
-    <em>SOURCES</em> <a target="_blank"
-                        href="https://github.com/digitpain">GitHub</a>
-    <br>
-  </footer>
+  <div style="position: relative;">
+    <!--    <button id="fullscreen" title="Fullscreen"></button>-->
+    <iframe id="img" src=""></iframe>
+  </div>
 </div>
+<hr>
+<footer class="hidden">
+  <em>PICTURE</em> <span id="url"></span>
+  <br>
+  <em>INTEGER</em> <span id="number"></span>
+  <br>
+  <br>
+  <span style="white-space: nowrap;">
+  <em>PAINTER</em> <span id="digitpain">DIGITPAIN</span><span
+  style="white-space: nowrap;"> <span id="o1">> whistlegraph </span> <span
+  id="o2">> justanothersystem</span> <span
+  id="o3">> jeffrey alan scudder</span>
+  </span>
+  <br>
+</span><em>PARABLE</em> <span id="parable">best pixels ever plotted</span>
+  <br>
+  <br>
+  <em>MARKETS</em> <a target="_blank"
+                      href="https://teia.art/digitpain">Teia</a>,
+  <a target="_blank" href="https://opensea.io/DIGITPAIN">OpenSea</a>, <a
+  target="_blank" href="https://foundation.app/@digitpain">Foundation</a>
+  <br>
+  <em>WALLETS</em>
+  <a target="_blank"
+     href="https://tzkt.io/tz1gkf8EexComFBJvjtT1zdsisdah791KwBE/operations">digitpain.tez</a>,
+  <a target="_blank"
+     href="https://etherscan.io/enslookup-search?search=digitpain.eth">digitpain.eth</a>
+  <br>
+
+  <div id="artwork">
+  <em>ARTWORK</em> <a target="_blank" href="https://rdp.whistlegraph.com">Radical
+  Digital Painting</a>,
+  <a target="_blank"
+     href="https://opensea.io/collection/tumpin-by-jeffrey-alan-scudder-2017">Tumpin</a>,
+  <a target="_blank"
+     href="https://opensea.io/collection/left-gallery?search[query]=ten%20minute%20painting&search[sortAscending]=true&search[sortBy]=PRICETen Minute Painting">Ten
+    Minute Painting</a>
+  </div>
+
+  <br>
+  <em>CULTURE</em> <a target="_blank" href="https://tiktok.com/@whistlegraph">Whistlegraph</a>
+  w/ <a target="_blank"
+        href="https://www.instagram.com/applinfreundlich">Alex</a> & <a
+  target="_blank" href="https://www.instagram.com/ck_free">Camille</a>
+  <br>
+  <em>SOCIETY</em> <a target="_blank" href="https://twitter.com/digitpain">Twitter</a>,
+  <a target="_blank" href="https://discord.gg/7KQsdPnrvX">Discord</a>, <a
+  target="_blank" href="https://instagram.com/digitpain">Instagram</a>
+  <br>
+  <em>SOURCES</em> <a target="_blank"
+                      href="https://github.com/digitpain">GitHub</a>
+  <br>
+</footer>
 </body>
 </html>
