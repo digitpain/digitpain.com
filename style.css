@@ -41,7 +41,7 @@ body {
   background: var(--backdrop);
   color: rgb(240, 240, 240);
   font-family: 'Berkeley Mono', monospace;
-  font-size: 16px;
+  font-size: 14px;
   -webkit-text-size-adjust: 100%;
   line-height: 135%;
   width: 100%;
@@ -59,6 +59,11 @@ body {
 a {
   color: rgb(220, 220, 220);
   white-space: nowrap;
+}
+
+#url a {
+  white-space: normal;
+  word-break: break-all;
 }
 
 a:hover {
@@ -111,23 +116,19 @@ footer::before {
   margin: auto;
   border: none;
   image-rendering: pixelated;
-  pointer-events: none;
+  background-color: transparent;
 }
 
 #digitpain {
-  font-weight: bold;
   color: white;
 }
 
 #parable {
-  color: rgb(147, 44, 44);
-  /*font-size: 125%;*/
-  /*font-family: 'Xanh Mono';*/
   font-style: normal;
   text-transform: uppercase;
 }
 
-#artwork {
+.indent {
   text-indent: -4.8em;
   padding-left: 4.8em;
 }
