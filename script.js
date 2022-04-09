@@ -41,7 +41,7 @@ function hashCheck() {
     if (p.url.length > 0) {
       url.innerHTML = `<a href="${p.url}">${p.url}</a>`;
     } else {
-      url.innerHTML = "UNMINTED";
+      url.innerHTML = "ON DISPLAY";
     }
 
     number.innerHTML = index;
