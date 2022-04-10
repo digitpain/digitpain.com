@@ -7,7 +7,7 @@ const footer = document.querySelector("footer");
 const paintings = [
   {
     url: "",
-    img: "https://aesthetic.computer/#digitpain",
+    img: "https://aesthetic.computer/#digitpain0",
     timesig: "2022.04.08.22.55",
     width: 1000,
     height: 1250,
